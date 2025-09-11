@@ -37,6 +37,36 @@ class ClassCredits {
         }
     }
 
+    // creates the comparator for comparing stock value
+class CreditComparator implements Comparator<Credit> {
+
+    // override the compare() method
+    public int compare(Credit s1, Credit s2)
+    {
+        if (s1.effectiveAt == s2.effectiveAt)
+            return s1.expiresAt - s2.expiresAt;
+        else if (s1.effectiveAt > s2.effectiveAt)
+            return 1;
+        else
+            return -1;
+    }
+}
+
+    // creates the comparator for comparing stock value
+class DeductionsComparator implements Comparator<Deduction> {
+
+    // override the compare() method
+    public int compare(Deduction s1, Deduction s2)
+    {
+        if (s1.effectiveAt == s2.effectiveAt)
+            return 0;
+        else if (s1.effectiveAt > s2.effectiveAt)
+            return 1;
+        else
+            return -1;
+    }
+}
+
     ClassCredits() {
         this.creditBlocks = new ArrayList<>();
         this.deductions = new ArrayList<>();
@@ -68,6 +98,8 @@ class ClassCredits {
                 activeBlocks.add(block);
             }
         }
+        Collections.sort(activeBlocks, new CreditComparator());
+
 
         ArrayList<Deduction> effectiveDeductions = new ArrayList<>();
         for (Deduction deduction : this.deductions) {
@@ -75,6 +107,8 @@ class ClassCredits {
                 effectiveDeductions.add(deduction);
             }
         }
+
+        Collections.sort(effectiveDeductions, new DeductionsComparator());
 
         // Process deductions that occurred up to the given timestamp.
         for (Deduction deduction : effectiveDeductions) {
@@ -89,7 +123,7 @@ class ClassCredits {
 
                 int takeAmount = Math.min(block.amount, deduction.amount - deductedAmount);
 
-                block.amount += takeAmount;
+                block.amount -= takeAmount;
                 deductedAmount += takeAmount;
 
                 if (deductedAmount == deduction.amount) {
