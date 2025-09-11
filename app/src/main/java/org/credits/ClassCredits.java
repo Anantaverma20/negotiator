@@ -89,54 +89,66 @@ class DeductionsComparator implements Comparator<Deduction> {
     // occurred up to the given timestamp. It is designed to deduct credits
     // from the soonest expiring blocks first.
     int GetBalanceAt(int timestamp) {
-
-        // Ensure we mutate the block to track deductions over time
-        ArrayList<Credit> activeBlocks = new ArrayList<>();
-        for (Credit block : this.creditBlocks) {
-            if (block.effectiveAt <= timestamp && timestamp < block.expiresAt) {
-                // Create a mutable copy
-                activeBlocks.add(block);
-            }
-        }
-        Collections.sort(activeBlocks, new CreditComparator());
-
-
-        ArrayList<Deduction> effectiveDeductions = new ArrayList<>();
-        for (Deduction deduction : this.deductions) {
-            if (deduction.effectiveAt <= timestamp) {
-                effectiveDeductions.add(deduction);
+       // Same: Deep copy credits active at final timestamp
+        List<Credit> allCredits = new ArrayList<>();
+        for (Credit c : creditBlocks) {
+            if (c.effectiveAt <= timestamp) {
+                allCredits.add(new Credit(c.amount, c.effectiveAt, c.expiresAt));
             }
         }
 
-        Collections.sort(effectiveDeductions, new DeductionsComparator());
+        // NEW: Sort deductions by time
+        List<Deduction> applicableDeductions = new ArrayList<>();
+        for (Deduction d : deductions) {
+            if (d.effectiveAt <= timestamp) {
+                applicableDeductions.add(d);
+            }
+        }
+        applicableDeductions.sort(Comparator.comparingInt(d -> d.effectiveAt));
 
-        // Process deductions that occurred up to the given timestamp.
-        for (Deduction deduction : effectiveDeductions) {
-            // Track the amount deducted thus far
-            int deductedAmount = 0;
+        for(Credit c : allCredits){
+                System.out.println("Initial Credit amount - "+c.amount+" starttime - "+c.effectiveAt+ " endtime - "+ c.expiresAt);
+        }
+        // CHANGED: Apply each deduction using credits valid at that time
+        for (Deduction d : applicableDeductions) {
+            int remaining = d.amount;
 
-            // Find the first available block to deduct from
-            for (Credit block : activeBlocks) {
-                if (block.amount <= 0) {
-                    continue;
-                }
-
-                int takeAmount = Math.min(block.amount, deduction.amount - deductedAmount);
-
-                block.amount -= takeAmount;
-                deductedAmount += takeAmount;
-
-                if (deductedAmount == deduction.amount) {
-                    break;
+            // NEW: Filter credits valid at the time of this deduction
+            List<Credit> eligibleCredits = new ArrayList<>();
+            for (Credit c : allCredits) {
+                if (c.effectiveAt <= d.effectiveAt && d.effectiveAt < c.expiresAt && c.amount > 0) {
+                    eligibleCredits.add(c);
                 }
             }
+
+            // NEW: Sort eligible credits by expiration
+            eligibleCredits.sort(Comparator
+                .comparingInt((Credit c) -> c.expiresAt)
+                .thenComparingInt(c -> c.effectiveAt));
+
+            for(Credit c : eligibleCredits){
+                System.out.println("Eligible Credit amount for Deduction - "+d.amount+" is "+c.amount+" starttime - "+c.effectiveAt+ " endtime - "+ c.expiresAt);
+            }
+            // CHANGED: Apply deduction only to eligible credits
+            for (Credit c : eligibleCredits) {
+                if (remaining == 0) break;
+                int take = Math.min(c.amount, remaining);
+                c.amount -= take;
+                remaining -= take;
+            }
+        }
+        for(Credit c : allCredits){
+            System.out.println("Credit amount - "+c.amount+" starttime - "+c.effectiveAt+ " endtime - "+ c.expiresAt);
+        }
+        // Same: Sum remaining credits
+        int balance = 0;
+        for (Credit c : allCredits) { 
+            if(c.expiresAt>timestamp){
+             balance += c.amount;
+            }
         }
 
-        // Calculate the final balance from the modified blocks.
-        int totalBalance = 0;
-        for (Credit block : activeBlocks) {
-            totalBalance += block.amount;
-        }
-        return totalBalance;
+        System.out.println("Balance is "+ balance);
+        return balance;
     }
 }
