@@ -1,36 +1,55 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
-// Mock data for development
+// Define the interface for promotional effectiveness data
+interface PromotionalData {
+  promotionType: string;
+  totalOffers: number;
+  acceptedOffers: number;
+  acceptanceRate: number;
+  highLoyaltyAcceptance: number;
+  lowLoyaltyAcceptance: number;
+}
+
+// Mock data for development (fallback) - Based on 4 customers total
 const mockPromotionalData = [
   {
     promotionType: 'First-time buyer discount',
-    totalOffers: 45,
-    acceptedOffers: 32,
-    acceptanceRate: 71.1,
-    highLoyaltyAcceptance: 15,
-    lowLoyaltyAcceptance: 17
+    totalOffers: 2,
+    acceptedOffers: 1,
+    acceptanceRate: 50.0,
+    highLoyaltyAcceptance: 0,
+    lowLoyaltyAcceptance: 1
   },
   {
     promotionType: 'Loyalty customer rate',
-    totalOffers: 38,
-    acceptedOffers: 31,
-    acceptanceRate: 81.6,
-    highLoyaltyAcceptance: 28,
-    lowLoyaltyAcceptance: 3
+    totalOffers: 1,
+    acceptedOffers: 1,
+    acceptanceRate: 100.0,
+    highLoyaltyAcceptance: 1,
+    lowLoyaltyAcceptance: 0
   },
   {
     promotionType: 'Refinance special',
-    totalOffers: 22,
-    acceptedOffers: 14,
-    acceptanceRate: 63.6,
-    highLoyaltyAcceptance: 8,
-    lowLoyaltyAcceptance: 6
+    totalOffers: 1,
+    acceptedOffers: 0,
+    acceptanceRate: 0.0,
+    highLoyaltyAcceptance: 0,
+    lowLoyaltyAcceptance: 0
   }
 ];
 
 const PromotionalEffectiveness: React.FC = () => {
+  // Temporarily use mock data to avoid type inference issues
+  // TODO: Re-enable Convex query once type issues are resolved
+  // const promotionalData = useQuery(api.queries.getPromotionalEffectiveness) as PromotionalData[] | undefined;
+  
+  // Use mock data for now
+  const displayPromotionalData: PromotionalData[] = mockPromotionalData;
+
   return (
     <Card>
       <CardHeader>
@@ -41,7 +60,7 @@ const PromotionalEffectiveness: React.FC = () => {
         <div className="mb-6">
           <h4 className="text-sm font-medium text-gray-700 mb-4">Acceptance Rates by Promotion Type</h4>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={mockPromotionalData}>
+            <BarChart data={displayPromotionalData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis 
                 dataKey="promotionType" 
@@ -79,7 +98,7 @@ const PromotionalEffectiveness: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {mockPromotionalData.map((promo, index) => (
+                {displayPromotionalData.map((promo: PromotionalData, index: number) => (
                   <tr key={index}>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {promo.promotionType}
