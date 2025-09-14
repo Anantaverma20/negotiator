@@ -1,86 +1,148 @@
-# Mortgage Rate Negotiator
+# Mortgage Rate Negotiator Analytics Dashboard
 
-An AI-powered chat interface for mortgage rate negotiation built with Next.js, React, and TypeScript.
+A comprehensive React-based analytics dashboard for monitoring mortgage rate performance, customer interactions, and business outcomes.
 
-## 🚀 Features
+## Features
 
-- **Interactive Chat Interface**: Collects user financial information through a conversational UI
-- **AI-Powered Negotiation**: Uses advanced prompts and state management for intelligent mortgage rate negotiation
-- **Smart Input Formatting**: Automatically formats currency inputs and validates user data
-- **Responsive Design**: Built with Tailwind CSS for mobile-first design
-- **TypeScript**: Full type safety throughout the application
+### 📊 Analytics Sections
 
-## 🏗️ Tech Stack
+1. **Mortgage Rate Performance**
+   - Chart of mortgage rates offered vs. accepted rates
+   - Trendline of acceptance rate per rate bucket (5–6%, 6–7%, 7–8%)
+   - KPI: Customer retention by mortgage rate
 
-- **Next.js 15** with App Router
-- **React 18**
-- **TypeScript**
-- **Tailwind CSS**
-- **AI-powered chat system**
+2. **Promotional Offer Effectiveness**
+   - Bar chart comparing acceptance rates of different promotional offers
+   - Table showing which promotions work best for high-loyalty vs low-loyalty customers
 
-## 📁 Project Structure
+3. **Customer Segmentation Analysis**
+   - Segment by: first-time buyer, assets owned, loyalty rating
+   - Heatmap/table of deals accepted by segment
+
+4. **Negotiation Strategy Impact**
+   - Funnel visualization of how negotiation rounds affect success rate
+   - KPI: Average % discount given vs. final acceptance
+
+5. **Funnel Drop-off Analysis**
+   - Step-by-step funnel (Background check → Credit check → Rate proposal → Negotiation → Final confirmation)
+   - Chart showing where most customers drop off
+
+6. **Reporting & Export**
+   - Button to export dashboard data as CSV
+   - Option to email a snapshot report (integrates with OpenAI API email agent)
+
+## Tech Stack
+
+- **Frontend**: React 18 with TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **Charts**: Recharts for data visualizations
+- **Backend**: Convex (for data storage and queries)
+- **Build Tool**: Create React App
+
+## Project Structure
 
 ```
-apps/web/
-├── app/                    # Next.js app directory
-│   ├── api/agent/         # API endpoints for chat handling
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout component
-│   └── page.tsx           # Main page component
-├── lib/                   # Utility functions and logic
-│   ├── negotiation.ts     # Mortgage calculation logic
-│   ├── prompts.ts         # AI prompts for negotiation
-│   ├── rate.ts           # Rate calculation utilities
-│   ├── state.ts          # State management
-│   └── types.ts          # TypeScript type definitions
-└── providers/            # React context providers
+src/
+├── components/
+│   ├── ui/
+│   │   └── Card.tsx              # Reusable card components
+│   ├── analytics/
+│   │   ├── MortgageRatePerformance.tsx
+│   │   ├── PromotionalEffectiveness.tsx
+│   │   ├── CustomerSegmentation.tsx
+│   │   ├── NegotiationImpact.tsx
+│   │   └── FunnelAnalysis.tsx
+│   ├── Dashboard.tsx             # Main dashboard layout
+│   └── ExportControls.tsx        # CSV export and email reporting
+├── types/
+│   └── index.ts                  # TypeScript type definitions
+├── lib/
+│   └── utils.ts                  # Utility functions and mock data
+├── App.tsx                       # Main app component
+├── index.tsx                     # App entry point
+└── index.css                     # Global styles with Tailwind
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
-1. **Install dependencies**:
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
    ```bash
-   cd apps/web
    npm install
    ```
 
-2. **Run the development server**:
+3. Start the development server:
    ```bash
-   npm run dev
+   npm start
    ```
 
-3. **Open** [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3000](http://localhost:3000) to view the dashboard
 
-## 🎯 How It Works
+### Building for Production
 
-1. **User Intake**: The chat interface collects essential financial information including:
-   - Annual salary and income
-   - Liquid assets and savings
-   - First-time buyer status
-   - Existing loans (vehicles, etc.)
-   - Desired loan amount and down payment
+```bash
+npm run build
+```
 
-2. **AI Analysis**: The system processes this information using intelligent prompts to:
-   - Calculate optimal mortgage rates
-   - Identify negotiation opportunities
-   - Provide personalized recommendations
+## Data Integration
 
-3. **Smart Negotiation**: The AI agent helps users:
-   - Understand market rates
-   - Prepare negotiation strategies
-   - Optimize their financial position
+The dashboard is designed to integrate with Convex backend with the following assumed table structure:
 
-## 🔧 Development
+- **customers**: Customer profiles with loyalty ratings, assets, etc.
+- **offers**: Mortgage rate offers with promotional details
+- **negotiations**: Negotiation rounds and outcomes
+- **mortgages**: Final mortgage details and status tracking
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+## Features in Detail
 
-## 📄 License
+### Responsive Design
+- Mobile-first approach with responsive grid layouts
+- Clean card-based design with rounded corners
+- Consistent color scheme and typography
 
-This project is private and proprietary.
+### Interactive Charts
+- Hover tooltips for detailed data points
+- Responsive charts that adapt to screen size
+- Multiple chart types: bar charts, line charts, funnel visualizations
 
-## 🤝 Contributing
+### Export Functionality
+- CSV export for all dashboard data
+- Email reporting integration ready for OpenAI API
+- Print-friendly layouts
 
-This is a private project. For questions or suggestions, please contact the development team.
+### Mock Data
+Currently uses mock data for development and demonstration purposes. In production, this would be replaced with real Convex queries.
+
+## Customization
+
+The dashboard is modular and easily customizable:
+
+- Add new analytics sections by creating components in `src/components/analytics/`
+- Modify styling through Tailwind classes
+- Update data processing logic in `src/lib/utils.ts`
+- Add new chart types using Recharts components
+
+## Performance Considerations
+
+- Lazy loading for chart components
+- Memoized calculations for data processing
+- Optimized re-renders with React.memo where appropriate
+
+## Future Enhancements
+
+- Real-time data updates
+- Advanced filtering and date range selection
+- Custom dashboard layouts
+- More detailed drill-down capabilities
+- Integration with additional data sources
+
+## License
+
+This project is created for demonstration purposes.
