@@ -1,12 +1,22 @@
 import React, { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
-// Mock data for development
+// Define the interface for mortgage rate performance data
+interface MortgageRateData {
+  rateRange: string;
+  offeredCount: number;
+  acceptedCount: number;
+  acceptanceRate: number;
+}
+
+// Mock data for development (fallback) - Based on 4 customers total
 const mockRateData = [
-  { rateRange: '5-6%', offeredCount: 45, acceptedCount: 32, acceptanceRate: 71.1 },
-  { rateRange: '6-7%', offeredCount: 78, acceptedCount: 51, acceptanceRate: 65.4 },
-  { rateRange: '7-8%', offeredCount: 23, acceptedCount: 12, acceptanceRate: 52.2 },
+  { rateRange: '5-6%', offeredCount: 1, acceptedCount: 1, acceptanceRate: 100.0 },
+  { rateRange: '6-7%', offeredCount: 2, acceptedCount: 1, acceptanceRate: 50.0 },
+  { rateRange: '7-8%', offeredCount: 1, acceptedCount: 0, acceptanceRate: 0.0 },
 ];
 
 const mockTrendData = [
@@ -19,11 +29,18 @@ const mockTrendData = [
 ];
 
 const MortgageRatePerformance: React.FC = () => {
+  // Temporarily use mock data to avoid type inference issues
+  // TODO: Re-enable Convex query once type issues are resolved
+  // const rateData = useQuery(api.queries.getMortgageRatePerformance) as MortgageRateData[] | undefined;
+  
   const retentionByRate = useMemo(() => [
     { rate: '5-6%', retention: 94.2 },
     { rate: '6-7%', retention: 89.7 },
     { rate: '7-8%', retention: 76.3 },
   ], []);
+
+  // Use mock data for now
+  const displayRateData: MortgageRateData[] = mockRateData;
 
   return (
     <Card>
@@ -36,7 +53,7 @@ const MortgageRatePerformance: React.FC = () => {
           <div>
             <h4 className="text-sm font-medium text-gray-700 mb-4">Rates Offered vs Accepted</h4>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={mockRateData}>
+              <BarChart data={displayRateData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="rateRange" />
                 <YAxis />
