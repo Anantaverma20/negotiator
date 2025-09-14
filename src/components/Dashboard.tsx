@@ -49,60 +49,10 @@ const Dashboard: React.FC = () => {
             <FunnelAnalysis />
           </div>
         </div>
-
-        {/* KPI Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Total Customers</p>
-                  <p className="text-2xl font-bold text-gray-900">1,234</p>
-                  <p className="text-xs text-green-600">+12% from last month</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Avg. Acceptance Rate</p>
-                  <p className="text-2xl font-bold text-gray-900">68.5%</p>
-                  <p className="text-xs text-green-600">+3.2% from last month</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Avg. Discount Given</p>
-                  <p className="text-2xl font-bold text-gray-900">0.25%</p>
-                  <p className="text-xs text-red-600">+0.05% from last month</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Customer Retention</p>
-                  <p className="text-2xl font-bold text-gray-900">92.1%</p>
-                  <p className="text-xs text-green-600">+1.8% from last month</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
 };
 
 export default Dashboard;
+
