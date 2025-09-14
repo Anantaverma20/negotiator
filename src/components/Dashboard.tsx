@@ -5,6 +5,7 @@ import PromotionalEffectiveness from './analytics/PromotionalEffectiveness';
 import CustomerSegmentation from './analytics/CustomerSegmentation';
 import NegotiationImpact from './analytics/NegotiationImpact';
 import FunnelAnalysis from './analytics/FunnelAnalysis';
+import KPISummary from './analytics/KPISummary';
 import ExportControls from './ExportControls';
 
 const Dashboard: React.FC = () => {
@@ -21,13 +22,13 @@ const Dashboard: React.FC = () => {
           </p>
         </div>
 
-        {/* Export Controls */}
-        <div className="mb-6">
-          <ExportControls />
-        </div>
-
         {/* Analytics Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          {/* KPI Summary */}
+          <div className="lg:col-span-2 mb-6">
+            <KPISummary />
+          </div>
+
           {/* Mortgage Rate Performance */}
           <div className="lg:col-span-2">
             <MortgageRatePerformance />
@@ -55,4 +56,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-
