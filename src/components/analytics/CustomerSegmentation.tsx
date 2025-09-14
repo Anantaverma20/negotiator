@@ -3,53 +3,53 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 
 // Mock data for development
 const mockSegmentData = [
-  {
+    {
     segment: 'First-time Buyers',
-    totalCustomers: 156,
-    dealsAccepted: 89,
-    acceptanceRate: 57.1,
+    totalCustomers: 2,
+    dealsAccepted: 1,
+    acceptanceRate: 50.0,
     averageRate: 6.8
   },
   {
     segment: 'Low Assets (0-1)',
-    totalCustomers: 203,
-    dealsAccepted: 134,
-    acceptanceRate: 66.0,
+    totalCustomers: 1,
+    dealsAccepted: 1,
+    acceptanceRate: 100.0,
     averageRate: 6.5
   },
   {
     segment: 'Medium Assets (2-3)',
-    totalCustomers: 98,
-    dealsAccepted: 71,
-    acceptanceRate: 72.4,
+    totalCustomers: 1,
+    dealsAccepted: 1,
+    acceptanceRate: 100.0,
     averageRate: 6.2
   },
   {
     segment: 'High Assets (4+)',
-    totalCustomers: 45,
-    dealsAccepted: 38,
-    acceptanceRate: 84.4,
-    averageRate: 5.9
+    totalCustomers: 0,
+    dealsAccepted: 0,
+    acceptanceRate: 0,
+    averageRate: 0
   },
   {
     segment: 'High Loyalty',
-    totalCustomers: 87,
-    dealsAccepted: 76,
-    acceptanceRate: 87.4,
+    totalCustomers: 1,
+    dealsAccepted: 1,
+    acceptanceRate: 100.0,
     averageRate: 5.8
   },
   {
     segment: 'Medium Loyalty',
-    totalCustomers: 234,
-    dealsAccepted: 156,
-    acceptanceRate: 66.7,
+    totalCustomers: 2,
+    dealsAccepted: 1,
+    acceptanceRate: 50.0,
     averageRate: 6.4
   },
   {
     segment: 'Low Loyalty',
-    totalCustomers: 181,
-    dealsAccepted: 100,
-    acceptanceRate: 55.2,
+    totalCustomers: 1,
+    dealsAccepted: 0,
+    acceptanceRate: 0,
     averageRate: 6.9
   }
 ];
@@ -138,3 +138,4 @@ const CustomerSegmentation: React.FC = () => {
 };
 
 export default CustomerSegmentation;
+
