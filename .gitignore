@@ -11,6 +11,8 @@ lerna-debug.log*
 out/
 build/
 dist/
+.test-dist/
+apps/web/.test-dist/
 
 # Environment variables
 .env

@@ -3,6 +3,7 @@ import { getOrCreateSession, appendMessage, updateSession } from '@/lib/state';
 import { computeInitialRate } from '@/lib/rate';
 import { counterOffer, isAtFloor } from '@/lib/negotiation';
 import { STR } from '@/lib/prompts';
+import { parseFirstTimeBuyer } from '@/lib/intake';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,16 +49,11 @@ export async function POST(request: NextRequest) {
         intake.assets = 0;
         fieldsUpdated = true;
       }
-      
+
       // Extract first-time buyer - more flexible patterns
-      if (lowerMessage.includes('first') && (lowerMessage.includes('yes') || lowerMessage.includes('true') || lowerMessage.includes('am'))) {
-        intake.firstTimeBuyer = true;
-        fieldsUpdated = true;
-      } else if (lowerMessage.includes('first') && (lowerMessage.includes('no') || lowerMessage.includes('false') || lowerMessage.includes('not'))) {
-        intake.firstTimeBuyer = false;
-        fieldsUpdated = true;
-      } else if (lowerMessage.includes('not') && lowerMessage.includes('first')) {
-        intake.firstTimeBuyer = false;
+      const firstTimeBuyer = parseFirstTimeBuyer(message);
+      if (firstTimeBuyer !== undefined) {
+        intake.firstTimeBuyer = firstTimeBuyer;
         fieldsUpdated = true;
       }
       
