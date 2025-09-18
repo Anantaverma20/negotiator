@@ -69,7 +69,9 @@ export default function Home() {
 
       const data = await response.json();
       
-      if (data.reply) {
+      if (data.state && Array.isArray(data.state.history) && data.state.history.length > 0) {
+        setMessages(data.state.history);
+      } else if (data.reply) {
         const agentMessage: ChatMessage = {
           id: uuidv4(),
           role: 'agent',
@@ -77,14 +79,6 @@ export default function Home() {
           timestamp: Date.now(),
         };
         setMessages(prev => [...prev, agentMessage]);
-      }
-
-      // Check if there are additional messages in the state (like notary completion)
-      if (data.state && data.state.history) {
-        const newMessages = data.state.history.slice(messages.length + 1); // Skip already displayed messages
-        if (newMessages.length > 0) {
-          setMessages(prev => [...prev, ...newMessages]);
-        }
       }
 
     } catch (error) {

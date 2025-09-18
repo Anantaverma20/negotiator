@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "./.test-dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "lib/intake.ts",
+    "lib/__tests__/**/*.ts"
+  ]
+}
